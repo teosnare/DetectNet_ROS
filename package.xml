@@ -40,7 +40,4 @@
   <run_depend>std_msgs</run_depend>
 
 
-  <!--<export>
-      <nodelet plugin="${prefix}/ros-detectnet-zed-nodelets.xml"/>
-  </export>-->
 </package>
