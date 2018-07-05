@@ -113,9 +113,9 @@ void callback(const sensor_msgs::ImageConstPtr &input) {
 
 int main(int argc, char **argv) {
     ros::init(argc, argv, "ros_detectnet_publisher");
-    ros::NodeHandle nh;
+    ros::NodeHandle nh("~");
     detectNet::NetworkType networkType;
-    std::string detectnet_name, sub_ros_topic;
+    std::string input_topic, output_topic;
     std::string prototxt_path, model_path, mean_binary_path;
 
     net = NULL;
@@ -134,9 +134,10 @@ int main(int argc, char **argv) {
     maxBoxes = 0;
     classes = 0;
 
-    nh.getParam("/prototxt_path", prototxt_path);
-    nh.getParam("/model_path", model_path);
-
+    nh.getParam("prototxt_path", prototxt_path);
+    nh.getParam("model_path", model_path);
+    if ( !nh.getParam("input_topic", input_topic)) { ROS_ERROR("failed to get input topic"); }
+    if ( !nh.getParam("output_topic", output_topic)) { ROS_ERROR("failed to get output topic"); }
 
     // make sure files exist (and we can read them)
     if (access(prototxt_path.c_str(), R_OK))
@@ -144,9 +145,7 @@ int main(int argc, char **argv) {
     if (access(model_path.c_str(), R_OK))
         ROS_ERROR("unable to read file \"%s\", check filename and permissions", model_path.c_str());
 
-    if (!nh.getParam("/ros_topic", sub_ros_topic)) {
-        ROS_ERROR("failed to get topic");
-    }
+
 
     net = detectNet::Create( prototxt_path.c_str(), model_path.c_str() );
 
@@ -169,11 +168,13 @@ int main(int argc, char **argv) {
     // setup image transport
     image_transport::ImageTransport it(nh);
 
-    // subscriber for passing in images
-    image_transport::Subscriber sub = it.subscribe(sub_ros_topic, 10, callback);
-
     // publisher for number of detected bounding boxes output
-    ros::Publisher detection_publisher = nh.advertise<ros_detectnet_camera::BoundingBoxes>("detections", 1);
+    detection_publisher = nh.advertise<ros_detectnet_camera::BoundingBoxes>(output_topic, 1);
+
+    // subscriber for passing in images
+    image_transport::Subscriber sub = it.subscribe(input_topic, 1, callback);
+
+
 
 
     ros::Rate loop_rate(25); //Hz

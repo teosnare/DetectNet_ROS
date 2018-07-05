@@ -1,9 +1,10 @@
 <launch>  
 
   <node name="ros_detectnet_camera_node" pkg="ros_detectnet_camera" type="ros_detectnet_camera_node" output="screen" >
-    <param name="prototxt_path" value="/home/nvidia/Projects/catkin_ws/src/DetectNet_ROS/config/deploy.prototxt" />
-    <param name="model_path" value="/home/nvidia/Projects/catkin_ws/src/DetectNet_ROS/Pr    config/snapshot_iter_2760.caffemodel" />
-    <param name="ros_topic" value="/excamera1/image_raw" />
+    <param name="input_topic" value="/excamera1/image_raw" />
+    <param name="output_topic" value="/excamera1/boxes" />
+    <param name="prototxt_path" value="$(find ros_detectnet_camera)/config/deploy.prototxt" />
+    <param name="model_path" value="$(find ros_detectnet_camera)/config/snapshot_iter_2760.caffemodel" />
   </node>
 
 </launch>
