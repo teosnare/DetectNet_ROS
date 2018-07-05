@@ -23,6 +23,7 @@ find_package(CUDA REQUIRED)
 find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})
 add_definitions(${QT_DEFINITIONS})
+find_package( OpenCV 3 REQUIRED )
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -126,6 +127,7 @@ include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
   ${CUDA_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
 # compile option
@@ -157,6 +159,8 @@ add_executable(${PROJECT_NAME}_node src/ros_detectnet_camera.cpp)
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
+  ${CUDA_LIBRARIES}
+  ${OpenCV_LIBS}
   jetson-inference
   nvcaffe_parser 
   nvinfer
