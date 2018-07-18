@@ -25,6 +25,8 @@ In order to run it requires to compile and install jetson-inference on TX2 modul
 - OpenCV >3
 - jetson-inference
 
+# ROS deps
+
 - https://github.com/jetsonhacks/installROSTX2 (core)
 - ros-kinetic-cv-bridge
 - ros-kinetic-image-transport
