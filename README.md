@@ -27,6 +27,6 @@ In order to run it requires to compile and install jetson-inference on TX2 modul
 
 # ROS deps
 
-- https://github.com/jetsonhacks/installROSTX2 (core)
+- ros-kinetic-ros-base  (see: https://github.com/jetsonhacks/installROSTX2 )
 - ros-kinetic-cv-bridge
 - ros-kinetic-image-transport
