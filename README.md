@@ -6,7 +6,7 @@ ROS topic can be used as image input via ROS image transport for DetectNet using
 Tested and working in July 2018
 
 
-In order to run it requires to compile and install jetson-inference
+In order to run it requires to compile and install jetson-inference on TX2 module
 
     cd jetson-inference
     mkdir build
@@ -18,9 +18,13 @@ In order to run it requires to compile and install jetson-inference
 
   
 # Pre-requisite
-- Jetson TX2 with JetPack >3.2
+- Jetson TX2 with JetPack >3.2 (just use latest ) 
 - TensorRT >3
 - CUDA 9.0
 - cuDNN >6.1
 - OpenCV >3
 - jetson-inference
+
+- https://github.com/jetsonhacks/installROSTX2 (core)
+- ros-kinetic-cv-bridge
+- ros-kinetic-image-transport
