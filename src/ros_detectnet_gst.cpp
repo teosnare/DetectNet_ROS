@@ -198,12 +198,18 @@ int main(int argc, char **argv) {
             {
                 ros_detectnet_camera::BoundingBox bbox;
                 const int nc = confCPU[n*2+1];
+
+                std::ostringstream stringStream;
+                stringStream << nc;
+                std::string classId = stringStream.str();
+
+                float conf = confCPU[n*2];
                 float* bb = bbCPU + (n * 4);
 
                 printf("bounding box %i   (%f, %f)  (%f, %f)  w=%f  h=%f\n", n, bb[0], bb[1], bb[2], bb[3], bb[2] - bb[0], bb[3] - bb[1]);
 
-                bbox.Class = nc;
-                bbox.confidence = 1.0; //TODO: check DetectNet.cpp docs to extract confidence range
+                bbox.Class = classId;
+                bbox.confidence = conf; //1.0; //TODO: check DetectNet.cpp docs to extract confidence range
                 bbox.xmin = (int)bb[0];
                 bbox.ymin = (int)bb[1];
                 bbox.xmax = (int)bb[2];

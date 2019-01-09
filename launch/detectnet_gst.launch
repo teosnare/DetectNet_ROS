@@ -1,16 +1,18 @@
 <launch>  
 
   <node name="ros_detectnet_gst_node" pkg="ros_detectnet_camera" type="ros_detectnet_gst_node" output="screen" >
+    <param name="launch_string" value="rtspsrc location=rtsp://admin:11BDF1c8@10.0.0.15:80/ch0_0.264 latency=0 ! queue ! rtph264depay ! h264parse ! queue ! omxh264dec ! appsink name=mysink" />
+    <!--
     <param name="launch_string" value="rtspsrc location=rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov ! queue ! rtph264depay ! h264parse ! queue ! omxh264dec ! appsink name=mysink" />
     <param name="image_width" value="240" />
     <param name="image_height" value="160" />
     <param name="image_bpp" value="12" />
-
+-->
     <param name="show_debug" value="true" />
     
     <param name="output_topic" value="/excamera1/boxes" />
-    <param name="prototxt_path" value="$(find ros_detectnet_camera)/config/deploy.prototxt" />
-    <param name="model_path" value="$(find ros_detectnet_camera)/config/snapshot_iter_2760.caffemodel" />
+    <param name="prototxt_path" value="$(find ros_detectnet_camera)/config/multiped-500/deploy.prototxt" />
+    <param name="model_path" value="$(find ros_detectnet_camera)/config/multiped-500/snapshot_iter_178000.caffemodel" />
   </node>
 
 </launch>

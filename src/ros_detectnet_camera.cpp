@@ -15,8 +15,8 @@
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 
-#include <ros_detectnet_camera/BoundingBox.h>
-#include <ros_detectnet_camera/BoundingBoxes.h>
+#include <vr_msgs/BoundingBox.h>
+#include <vr_msgs/BoundingBoxes.h>
 
 bool signal_recieved;
 
@@ -78,7 +78,7 @@ void callback(const sensor_msgs::ImageConstPtr &input) {
     // detect image with detectNet
     int numBoundingBoxes = maxBoxes;
     // number of bounding boxes
-    ros_detectnet_camera::BoundingBoxes detections;
+    vr_msgs::BoundingBoxes detections;
 
     if (net->Detect((float *) gpu_data, imgWidth, imgHeight, bbCPU, &numBoundingBoxes, confCPU)) {
         int lastClass = 0;
@@ -87,7 +87,7 @@ void callback(const sensor_msgs::ImageConstPtr &input) {
         //printf("%i bounding boxes detected\n", numBoundingBoxes);
 
         for (int n = 0; n < numBoundingBoxes; n++) {
-            ros_detectnet_camera::BoundingBox bbox;
+            vr_msgs::BoundingBox bbox;
             const int nc = confCPU[n * 2 + 1];
             float *bb = bbCPU + (n * 4);
 
@@ -169,7 +169,7 @@ int main(int argc, char **argv) {
     image_transport::ImageTransport it(nh);
 
     // publisher for number of detected bounding boxes output
-    detection_publisher = nh.advertise<ros_detectnet_camera::BoundingBoxes>(output_topic, 1);
+    detection_publisher = nh.advertise<vr_msgs::BoundingBoxes>(output_topic, 1);
 
     // subscriber for passing in images
     image_transport::Subscriber sub = it.subscribe(input_topic, 1, callback);
