@@ -90,6 +90,8 @@ void callback(const sensor_msgs::ImageConstPtr &input) {
 
         for (int n = 0; n < numBoundingBoxes; n++) {
             vr_msgs::BoundingBox bbox;
+            float conf = confCPU[n * 2 + 0];
+
             const int nc = confCPU[n * 2 + 1];
             float *bb = bbCPU + (n * 4);
 
@@ -97,16 +99,18 @@ void callback(const sensor_msgs::ImageConstPtr &input) {
             //       bb[3] - bb[1]);
             if (publish_image)
             {
+				int clr = 255 * conf;
+				
 				// draw a green line(CW) on the overlay copy
-				cv::line(cv_image, cv::Point(bb[0],bb[1]), cv::Point(bb[2],bb[1]),cv::Scalar(0, 255, 0),2);
-				cv::line(cv_image, cv::Point(bb[2],bb[1]), cv::Point(bb[2],bb[3]),cv::Scalar(0, 255, 0),2);
-				cv::line(cv_image, cv::Point(bb[2],bb[3]), cv::Point(bb[0],bb[3]),cv::Scalar(0, 255, 0),2);
-				cv::line(cv_image, cv::Point(bb[0],bb[3]), cv::Point(bb[0],bb[1]),cv::Scalar(0, 255, 0),2);				
+				cv::line(cv_image, cv::Point(bb[0],bb[1]), cv::Point(bb[2],bb[1]),cv::Scalar(0, clr, 0),2);
+				cv::line(cv_image, cv::Point(bb[2],bb[1]), cv::Point(bb[2],bb[3]),cv::Scalar(0, clr, 0),2);
+				cv::line(cv_image, cv::Point(bb[2],bb[3]), cv::Point(bb[0],bb[3]),cv::Scalar(0, clr, 0),2);
+				cv::line(cv_image, cv::Point(bb[0],bb[3]), cv::Point(bb[0],bb[1]),cv::Scalar(0, clr, 0),2);				
 			}     
             
 
             bbox.Class = nc;
-            bbox.confidence = 1.0; //TODO: check DetectNet.cpp docs to extract confidence range
+            bbox.confidence = conf; //TODO: check DetectNet.cpp docs to extract confidence range
             bbox.xmin = (int)bb[0];
             bbox.ymin = (int)bb[1];
             bbox.xmax = (int)bb[2];
