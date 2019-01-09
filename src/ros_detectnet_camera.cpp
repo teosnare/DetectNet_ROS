@@ -22,6 +22,8 @@ bool signal_recieved;
 
 
 ros::Publisher detection_publisher;
+image_transport::Publisher image_publisher;
+bool publish_image = true;
 
 
 cv::Mat cv_image;
@@ -91,8 +93,17 @@ void callback(const sensor_msgs::ImageConstPtr &input) {
             const int nc = confCPU[n * 2 + 1];
             float *bb = bbCPU + (n * 4);
 
-            printf("bounding box %i   (%f, %f)  (%f, %f)  w=%f  h=%f\n", n, bb[0], bb[1], bb[2], bb[3], bb[2] - bb[0],
-                   bb[3] - bb[1]);
+			//printf("bounding box %i   (%f, %f)  (%f, %f)  w=%f  h=%f\n", n, bb[0], bb[1], bb[2], bb[3], bb[2] - bb[0],
+            //       bb[3] - bb[1]);
+            if (publish_image)
+            {
+				// draw a green line(CW) on the overlay copy
+				cv::line(cv_image, cv::Point(bb[0],bb[1]), cv::Point(bb[2],bb[1]),cv::Scalar(0, 255, 0),2);
+				cv::line(cv_image, cv::Point(bb[2],bb[1]), cv::Point(bb[2],bb[3]),cv::Scalar(0, 255, 0),2);
+				cv::line(cv_image, cv::Point(bb[2],bb[3]), cv::Point(bb[0],bb[3]),cv::Scalar(0, 255, 0),2);
+				cv::line(cv_image, cv::Point(bb[0],bb[3]), cv::Point(bb[0],bb[1]),cv::Scalar(0, 255, 0),2);				
+			}     
+            
 
             bbox.Class = nc;
             bbox.confidence = 1.0; //TODO: check DetectNet.cpp docs to extract confidence range
@@ -109,6 +120,11 @@ void callback(const sensor_msgs::ImageConstPtr &input) {
     }
 
     detection_publisher.publish(detections);
+    if (publish_image)
+    {
+		pub_detectnet_image = cv_bridge::CvImage(std_msgs::Header(), "bgr8", cv_image).toImageMsg(); 
+		image_publisher.publish(pub_detectnet_image);
+	}
 }
 
 int main(int argc, char **argv) {
@@ -170,7 +186,12 @@ int main(int argc, char **argv) {
 
     // publisher for number of detected bounding boxes output
     detection_publisher = nh.advertise<vr_msgs::BoundingBoxes>(output_topic, 1);
-
+    
+    if (publish_image)
+    {
+		image_publisher = it.advertise("detector/debug", 1);
+	}
+	
     // subscriber for passing in images
     image_transport::Subscriber sub = it.subscribe(input_topic, 1, callback);
 
