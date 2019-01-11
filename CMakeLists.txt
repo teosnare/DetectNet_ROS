@@ -20,9 +20,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## System dependencies are found with CMake's conventions
 #find_package(jetson-inference REQUIRED
 #              HINTS /home/nvidia/lavoro/enelarchon_rover/detectnet/libs/jetson-inference/distrib/share)
-              
-set(jetson-inference_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/jetson-inference/distrib/include")
-set(jetson-inference_LIBRARIES "${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/jetson-inference/distrib/lib/jetson-inference/libjetson-inference.so")
+
+set(jetson-inference_INSTALL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/jetson-inference/distrib")              
+set(jetson-inference_INCLUDE_DIRS "${jetson-inference_INSTALL_DIR}/include")
+set(jetson-inference_LIBRARIES ${jetson-inference_INSTALL_DIR}/lib/libjetson-inference.so ${jetson-inference_INSTALL_DIR}/lib/libjetson-utils.so)
 find_package(CUDA REQUIRED)
 find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})
@@ -133,7 +134,7 @@ include_directories(
   ${CUDA_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}
   ${jetson-inference_INCLUDE_DIRS}
-  /usr/include/gstreamer-1.0 /usr/lib/aarch64-linux-gnu/gstreamer-1.0/include /usr/include/glib-2.0 /usr/include/libxml2 /usr/lib/aarch64-linux-gnu/glib-2.0/include/
+#  /usr/include/gstreamer-1.0 /usr/lib/aarch64-linux-gnu/gstreamer-1.0/include /usr/include/glib-2.0 /usr/include/libxml2 /usr/lib/aarch64-linux-gnu/glib-2.0/include/
 )
 
 # compile option
@@ -151,7 +152,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_node src/ros_detectnet_camera.cpp)
-add_executable(ros_detectnet_gst_node src/ros_detectnet_gst.cpp)
+#add_executable(ros_detectnet_gst_node src/ros_detectnet_gst.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -169,22 +170,25 @@ target_link_libraries(${PROJECT_NAME}_node
   ${CUDA_LIBRARIES}
   ${OpenCV_LIBS}
   #jetson-inference
+  #jetson-utils
   ${jetson-inference_LIBRARIES}
   nvcaffe_parser 
   nvinfer
   stdc++
 )
 
-target_link_libraries(ros_detectnet_gst_node
-  ${catkin_LIBRARIES}
-  ${CUDA_LIBRARIES}
-  ${OpenCV_LIBS}
-  #jetson-inference
-  ${jetson-inference_LIBRARIES}
-  nvcaffe_parser
-  nvinfer
-  stdc++
-)
+
+#target_link_libraries(ros_detectnet_gst_node
+#  ${catkin_LIBRARIES}
+#  ${CUDA_LIBRARIES}
+#  ${OpenCV_LIBS}
+#  #jetson-inference
+#   #jetson-utils 
+#  ${jetson-inference_LIBRARIES}
+#  nvcaffe_parser
+#  nvinfer
+#  stdc++
+#)
 
 #############
 ## Install ##

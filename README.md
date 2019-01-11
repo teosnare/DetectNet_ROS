@@ -21,7 +21,7 @@ NOTE: it is recommended to have the jetson-inference package in the folder
 
 and set as install target the "distrib" subfolder under the jetson-inference folder. Call cmake like this:
 
-cmake -DCMAKE_INSTALL_FOLDER=../distrib ..
+cmake -DCMAKE_INSTALL_FOLDER=../distrib/ ../
 
 
   

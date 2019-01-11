@@ -1,13 +1,12 @@
 #include <ros/ros.h>
 #include <jetson-inference/detectNet.h>
-#include <jetson-inference/loadImage.h>
-#include <jetson-inference/cudaFont.h>
-#include <jetson-inference/cudaMappedMemory.h>
-#include <jetson-inference/cudaNormalize.h>
-#include <jetson-inference/cudaFont.h>
+#include <jetson-utils/loadImage.h>
+#include <jetson-utils/cudaMappedMemory.h>
+#include <jetson-utils/cudaNormalize.h>
+#include <jetson-utils/cudaFont.h>
 
-#include <jetson-inference/glDisplay.h>
-#include <jetson-inference/glTexture.h>
+#include <jetson-utils/glDisplay.h>
+#include <jetson-utils/glTexture.h>
 
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
