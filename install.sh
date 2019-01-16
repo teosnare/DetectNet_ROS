@@ -43,6 +43,7 @@ sudo make install
 
 cd $ROS_WS_DIR/src
 git clone https://github.com/cesare-montresor/DetectNet_ROS.git
+mv DetectNet_ROS detectnet_camera
 cd $ROS_WS_DIR
 
 

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>ros_detectnet_camera</name>
+  <name>detectnet_camera</name>
   <version>0.1.0</version>
   <description>detectNet implementation based on ros topic of ZED image</description>
 
