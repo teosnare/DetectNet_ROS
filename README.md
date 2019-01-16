@@ -11,17 +11,11 @@ In order to run it requires to compile and install jetson-inference on TX2 modul
     cd jetson-inference
     mkdir build
     cd build
-    cmake ..
+    cmake ../
     make
     sudo make install
     
-NOTE: it is recommended to have the jetson-inference package in the folder
 
-../../../libs/jetson-inference
-
-and set as install target the "distrib" subfolder under the jetson-inference folder. Call cmake like this:
-
-cmake -DCMAKE_INSTALL_FOLDER=../distrib/ ../
 
 
   

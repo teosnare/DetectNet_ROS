@@ -14,16 +14,12 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   std_msgs
-        message_generation
-        )
+  message_generation
+  vr_msgs        )
 
 ## System dependencies are found with CMake's conventions
-#find_package(jetson-inference REQUIRED
-#              HINTS /home/nvidia/lavoro/enelarchon_rover/detectnet/libs/jetson-inference/distrib/share)
-
-set(jetson-inference_INSTALL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/jetson-inference/distrib")              
-set(jetson-inference_INCLUDE_DIRS "${jetson-inference_INSTALL_DIR}/include")
-set(jetson-inference_LIBRARIES ${jetson-inference_INSTALL_DIR}/lib/libjetson-inference.so ${jetson-inference_INSTALL_DIR}/lib/libjetson-utils.so)
+find_package(jetson-utils REQUIRED)
+find_package(jetson-inference REQUIRED)
 find_package(CUDA REQUIRED)
 find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})
@@ -61,10 +57,10 @@ find_package( OpenCV 3 REQUIRED )
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files( FILES
-        BoundingBox.msg
-        BoundingBoxes.msg
-)
+#add_message_files( FILES
+#        BoundingBox.msg
+#        BoundingBoxes.msg
+#)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -81,10 +77,10 @@ add_message_files( FILES
 # )
 
 ## Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
-   std_msgs
- )
+#generate_messages(
+#   DEPENDENCIES
+#   std_msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -133,7 +129,6 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
   ${CUDA_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}
-  ${jetson-inference_INCLUDE_DIRS}
 #  /usr/include/gstreamer-1.0 /usr/lib/aarch64-linux-gnu/gstreamer-1.0/include /usr/include/glib-2.0 /usr/include/libxml2 /usr/lib/aarch64-linux-gnu/glib-2.0/include/
 )
 
@@ -169,9 +164,8 @@ target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
   ${CUDA_LIBRARIES}
   ${OpenCV_LIBS}
-  #jetson-inference
-  #jetson-utils
-  ${jetson-inference_LIBRARIES}
+  jetson-utils
+  jetson-inference
   nvcaffe_parser 
   nvinfer
   stdc++
@@ -182,9 +176,8 @@ target_link_libraries(${PROJECT_NAME}_node
 #  ${catkin_LIBRARIES}
 #  ${CUDA_LIBRARIES}
 #  ${OpenCV_LIBS}
-#  #jetson-inference
-#   #jetson-utils 
-#  ${jetson-inference_LIBRARIES}
+#  jetson-inference
+#  jetson-utils 
 #  nvcaffe_parser
 #  nvinfer
 #  stdc++

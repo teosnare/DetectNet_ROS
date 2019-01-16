@@ -29,15 +29,12 @@ sudo ln -sf tegra/libGL.so libGL.so
 
 # Jetson-inference
 cd $DIR
-mkdir libs
-cd libs
 git clone https://github.com/dusty-nv/jetson-inference
-cd jetson-inference
+cd $DIR/jetson-inference
 git submodule update --init
-mkdir distrib
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=../distrib/ ../
+cmake ../
 make
 sudo make install
 
